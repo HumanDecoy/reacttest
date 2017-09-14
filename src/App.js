@@ -109,11 +109,21 @@ class App extends Component {
     render(){
  console.log(this.state.employees)
 
+        const employ = this.state.employees.map(item => 
+          
+          <div key={item.key} className="App-Nocolor" >
+              <li>Name : {item.firstName} {item.lastName}</li>
+              <li>Dollars: {item.amountOnBank}</li>
+              <li>Born: {item.born}</li>
+            
+          </div> 
+      )
 
-        const list = this.state.todos.map(todo => 
+
+
+         const list = this.state.todos.map(todo => 
             !todo.value.completed ? 
           <div key={todo.key} className={todo.value.completed ? "App-color" : "App-Nocolor" }>
-             
               <p>{todo.value.name}</p>
               <p>{todo.value.date}</p>
               <button onClick={() => {this.removeTodo(todo.key)}}> Remove </button>
@@ -144,6 +154,8 @@ class App extends Component {
               { list }
         <h1> DONE ! </h1>
         {doneList}
+          <h1> The thing : </h1>
+          {employ}
           </div>
 
           )
