@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from'./firebase.js';
 import './App.css';
+import Login from './components/login/Login.js';
 
 
 class App extends Component {
@@ -8,8 +9,14 @@ class App extends Component {
   state ={
         todos: [],
         employees: [],
-        todoValue: ''
+        todoValue: '',
+        username:'',
+        password:'',
+        user:"",
+        currentusername:'',
+     
     }
+
 
   
   toArray(firebaseObject) {
@@ -22,7 +29,18 @@ class App extends Component {
 
   componentDidMount(){
 
- 
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+        //Logged in, change states!
+        this.setState({user:user})
+        
+           } else{
+        this.setState({user:''})
+      
+            }
+        })
+
+
         firebase.database().ref("employees").orderByChild("born")
         .startAt("1985").endAt("1995")
          .on('value', (snapshot) => {
@@ -68,6 +86,32 @@ class App extends Component {
         })
   }
 
+  
+        
+     onSubmit = e => {
+    e.preventDefault();
+    firebase.auth()
+      .createUserWithEmailAndPassword(this.state.username, this.state.password)
+      .then(user => console.log("Created user", user))
+      .catch(error => console.log(error))
+  };
+
+    signIn = (e) => {
+    e.preventDefault();
+    firebase.auth()
+      .signInWithEmailAndPassword(this.state.username, this.state.password)
+      .then(user => console.log("Signed in !", user))
+      .catch(error => console.log(error));
+  }
+
+
+    
+     signOut = (e) => {
+      e.preventDefault();
+      console.log("SIGN OUT!")
+      firebase.auth().signOut();
+  }
+
       addTodo = (e) => {
        e.preventDefault();
        //Create a new object with value from inputfield, value
@@ -108,7 +152,8 @@ class App extends Component {
   
  
     render(){
- console.log(this.state.employees)
+      
+
 
         const employ = this.state.employees.map(item => 
           
@@ -142,7 +187,15 @@ class App extends Component {
             </div> : null
   )
       return(
-          <div className="App">
+         
+         <div className="App">
+               {!this.state.user ? 
+              <Login onChange={this.onChange} username={this.state.username} password={this.state.password} register={this.onSubmit} signIn={this.signIn} />
+              : 
+
+          <div classname="App">
+           <h1> Logged in as  {this.state.user.email} </h1>
+            <button className="btn btn-danger" onClick={this.signOut}>Sign Out</button>
               <form onSubmit={this.addTodo}>
                   <input 
                       type="text" 
@@ -151,12 +204,14 @@ class App extends Component {
                       name="todoValue"/>
                   <input type="submit" value="Add Todo" />
               </form>
+
           <h1> TODO ! </h1>
               { list }
         <h1> DONE ! </h1>
         {doneList}
           <h1> The thing : </h1>
           {employ}
+          </div> }
           </div>
 
           )
