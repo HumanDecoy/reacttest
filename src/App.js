@@ -7,8 +7,8 @@ class App extends Component {
 
   state ={
         todos: [],
-        todoValue: '',
-        employees: []
+        employees: [],
+        todoValue: ''
     }
 
   
@@ -21,6 +21,7 @@ class App extends Component {
   }
 
   componentDidMount(){
+
  
         firebase.database().ref("employees").orderByChild("born")
         .startAt("1985").endAt("1995")
