@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from'./firebase.js';
 import './App.css';
 import Login from './components/login/Login.js';
+import Sheep from './sheep.gif';
 
 
 class App extends Component {
@@ -189,6 +190,7 @@ class App extends Component {
       return(
          
          <div className="App">
+             <img src={Sheep} alt="HTML5 Icon"/>
                {!this.state.user ? 
               <Login onChange={this.onChange} username={this.state.username} password={this.state.password} register={this.onSubmit} signIn={this.signIn} />
               : 

@@ -10,6 +10,8 @@ class Login extends Component{
 
 		return(
 			<div style={{maxWidth: "30%", margin: "5rem auto"}}>
+				
+				
 				<form onSubmit={this.props.onSubmitLog}>
 					<div className={`form-group ${hasError}`}>
 						<label htmlFor="username">email</label>
@@ -51,7 +53,7 @@ class Login extends Component{
               
 				</form>
 
-
+				
 			</div>
 			);
 	}
